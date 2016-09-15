@@ -3,7 +3,8 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
   attributeFormDefault="unqualified" vc:maxVersion="1.1" vc:minVersion="1.0"
   xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning">
-
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" 
+       schemaLocation="http://www.w3.org/2001/03/xml.xsd"/> 
 <!-- DATA TYPES -->
 
 <!-- GENERIC SIMPLE TYPES -->
@@ -11,7 +12,7 @@
   <xs:annotation>
     <xs:documentation>
     E.164 PHONE NUMBER
-
+    
     A phone number in E.164 Standard.
     Slightly modified from pattern provided by FreeSWITCH (must include +!)
     </xs:documentation>
@@ -388,7 +389,7 @@
   </xs:restriction>
 </xs:simpleType>
 
-<xs:simpleType name="language" id="language">
+<xs:simpleType name="gen_st_language" id="gen_st_language">
  <xs:restriction base="xs:token">
  <xs:pattern
  value="([a-zA-Z]{2}|[iI]-[a-zA-Z]+|[xX]-[a-zA-Z]{1,8})(-[a-zA-Z]{1,8})*"
@@ -409,7 +410,7 @@
   <xs:simpleContent>
     <xs:extension base="xs:string">
       <xs:attribute name="type" type="tu_st_name_type" />
-      <xs:attribute name="lang" type="xml:lang" />
+      <xs:attribute name="lang" type="gen_st_language" />
     </xs:extension>
   </xs:simpleContent>
 </xs:complexType>
