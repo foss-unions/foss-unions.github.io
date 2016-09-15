@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <xs:schema xmlns:xml="http://www.w3.org/XML/1998/namespace"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+  attributeFormDefault="unqualified" vc:maxVersion="1.1" vc:minVersion="1.0"
+  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning">
+
+<!-- DATA TYPES -->
+
+<!-- GENERIC SIMPLE TYPES -->
+<xs:simpleType name="gen_st_e164_phone" id="gen_st_e164_phone">
+  <xs:annotation>
+    <xs:documentation>
+    E.164 PHONE NUMBER
+
+    A phone number in E.164 Standard.
+    Slightly modified from pattern provided by FreeSWITCH (must include +!)
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:string">
+    <xs:pattern value="\+[1-9]{0,1}[0-9]{1,14}" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="gen_st_contact_type" id="gen_st_contact_type">
+  <xs:annotation>
+    <xs:documentation>
+    TYPE OF CONTACT
+
+    The type of contact; i.e. phone, fax, email, etc.
+  </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="Phone" />
+    <xs:enumeration value="E-mail" />
+    <xs:enumeration value="Facebook" />
+    <xs:enumeration value="Twitter" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="gen_st_contact_context" id="gen_st_contact_context">
+  <xs:annotation>
+    <xs:documentation>
+    CONTACT CONTEXT
+
+    What context the contact is to be used.
+  </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="Regular" />
+    <xs:enumeration value="Emergency" />
+    <xs:enumeration value="Legal" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="gen_st_image_type" id="gen_st_image_type">
+  <xs:annotation>
+    <xs:documentation>
+    IMAGE TYPE
+    The type of image that this is. (i.e. Standard, Widescreen, etc)
+    The context in which the image is used.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:pattern value="Standard" />
+  </xs:restriction>
+</xs:simpleType>
+
+
+<xs:simpleType name="gen_st_image_size" id="gen_st_image_size">
+  <xs:annotation>
+    <xs:documentation>
+    IMAGE SIZE
+    Pre-defined size of an image.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="x-small" />
+    <xs:enumeration value="small" />
+    <xs:enumeration value="medium" />
+    <xs:enumeration value="large" />
+    <xs:enumeration value="x-large" />
+  </xs:restriction>
+</xs:simpleType>
+
+<!-- GENERIC COMPLEX TYPES -->
+
+<xs:complexType name="PersonNameType">
+<xs:annotation>
+  <xs:documentation>
+  PERSONAL NAME
+
+  HR-XML standard for personal name.
+  </xs:documentation>
+</xs:annotation>
+<xs:sequence>
+	<xs:element name="FormattedName" type="xs:string" minOccurs="0"/>
+	<xs:element name="LegalName" type="xs:string" minOccurs="0"/>
+	<xs:element name="GivenName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+	<xs:element name="PreferredGivenName" type="xs:string" minOccurs="0"/>
+	<xs:element name="MiddleName" type="xs:string" minOccurs="0"/>
+	<xs:element name="FamilyName" minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="primary">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="true"/>
+								<xs:enumeration value="false"/>
+								<xs:enumeration value="undefined"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="prefix" type="xs:string"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Affix" minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="type" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="aristocraticTitle"/>
+								<xs:enumeration value="formOfAddress"/>
+								<xs:enumeration value="generation"/>
+								<xs:enumeration value="qualification"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AlternateScript" minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FormattedName" type="xs:string" minOccurs="0"/>
+				<xs:element name="LegalName" type="xs:string" minOccurs="0"/>
+				<xs:element name="GivenName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="PreferredGivenName" type="xs:string" minOccurs="0"/>
+				<xs:element name="MiddleName" type="xs:string" minOccurs="0"/>
+				<xs:element name="FamilyName" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute name="primary">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="true"/>
+											<xs:enumeration value="false"/>
+											<xs:enumeration value="undefined"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+								<xs:attribute name="prefix" type="xs:string"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Affix" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute name="type" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="aristocraticTitle"/>
+											<xs:enumeration value="formOfAddress"/>
+											<xs:enumeration value="generation"/>
+											<xs:enumeration value="qualification"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="script" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+</xs:sequence>
+<xs:attribute name="script" type="xs:string"/>
+</xs:complexType>
+
+
+  <xs:complexType name="PostalAddressType">
+    <xs:annotation>
+      <xs:documentation>
+      POSTAL ADDRESS TYPE
+
+      HR-XML postal address type. Amended to lowercase.
+      </xs:documentation>
+    </xs:annotation>
+		<xs:sequence>
+			<xs:element name="countrycode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[A-Z]{2}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="postalcode" type="xs:string" minOccurs="0"/>
+			<xs:element name="region" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="municipality" type="xs:string" minOccurs="0"/>
+			<xs:element name="deliveryaddress" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="addressline" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="streetname" type="xs:string" minOccurs="0"/>
+						<xs:element name="buildingnumber" type="xs:string" minOccurs="0"/>
+						<xs:element name="unit" type="xs:string" minOccurs="0"/>
+						<xs:element name="postofficebox" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="recipient" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="personname" type="PersonNameType" minOccurs="0"/><!-- Amended to xs:string from HR-XML original -->
+						<xs:element name="additionaltext" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="organizationname" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Post Office Box Address"/>
+					<xs:enumeration value="Street Address"/>
+					<xs:enumeration value="Military Address"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+
+<!-- TRADE UNION SIMPLE TYPES -->
+
+<xs:simpleType name="tu_st_history_status" id="tu_st_history_status">
+  <xs:annotation>
+    <xs:documentation>
+    TRADE UNION HISTORY STATUS
+    As a trade union moves through history, it will move into various
+    stages. This delineates what happened at each time.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="Closed" />
+    <xs:enumeration value="Merged" />
+    <xs:enumeration value="Founded" />
+    <xs:enumeration value="Re-formed" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="tu_st_workplace_status" id="tu_st_workplace_status">
+  <xs:annotation>
+    <xs:documentation>
+    TRADE UNION WORKPLACE STATUS
+    The status of workplaces with regard to recognition and union activity.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="Non-Recognised" />
+    <xs:enumeration value="Recognised" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="tu_st_structure_type" id="tu_st_structure_type">
+  <xs:annotation>
+    <xs:documentation>
+    TRADE UNION STRUCTURES
+
+    A type of trade union structure (i.e. Commitee, Council, Executive)
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="Executive Committee" />
+    <xs:enumeration value="Committee" />
+    <xs:enumeration value="Council" />
+    <xs:enumeration value="Executive" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="tu_st_event_type" id="tu_st_event_type">
+  <xs:annotation>
+    <xs:documentation>
+    TRADE UNION EVENT TYPE
+
+    A type of trade union event.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="Annual" />
+    <xs:enumeration value="Bi-Annual" />
+    <xs:enumeration value="Quarterly" />
+    <xs:enumeration value="Monthly" />
+    <xs:enumeration value="Weekly" />
+    <xs:enumeration value="Bi-Weekly" />
+    <xs:enumeration value="Daily" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="tu_st_relationship_type" id="tu_st_relationship_type">
+  <xs:annotation>
+    <xs:documentation>
+    TRADE UNION RELATIONSHIP TYPE
+
+    Relationships that a trade union entity retains with other trade union entities.
+    </xs:documentation>
+  </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="Parent" />
+      <xs:enumeration value="Child" />
+      <xs:enumeration value="Association" />
+    </xs:restriction>
+</xs:simpleType>
+
+
+<xs:simpleType name="tu_st_identification_type" id="tu_st_identification_type">
+  <xs:annotation>
+    <xs:documentation>
+    TRADE UNION IDENTIFICATION TYPE
+    Delineates various types of identity that a trade union entity can have.
+
+    WCCN = WorldCat Catalogue Number
+    UKLN = UK Government Union List Number
+    VIAF = Virtual Internet Identity File
+    LCCN = Library of Congress Catalog Number
+    UKCH = Companies House Registration Number
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="WCCN" />
+    <xs:enumeration value="UKLN" />
+    <xs:enumeration value="VIAF" />
+    <xs:enumeration value="ISNI" />
+    <xs:enumeration value="LCCN" />
+    <xs:enumeration value="UKCH" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="tu_st_name_type" id="tu_st_name_type">
+  <xs:annotation>
+    <xs:documentation>
+    TRADE UNION NAME TYPE
+    Delineates various types of name that a trade union entity can have.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="Acronym" />
+    <xs:enumeration value="Also Known As" />
+    <xs:enumeration value="Previously Known As" />
+    <xs:enumeration value="Merged" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="tu_st_person_role_type" id="tu_st_person_role_type">
+  <xs:annotation>
+    <xs:documentation>
+    TRADE UNION PERSON ROLE TYPE
+    Delineates various types of role individuals can have in a trade union entity.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="General Secretary" />
+    <xs:enumeration value="Deputy General Secretary" />
+    <xs:enumeration value="Executive Chairperson" />
+    <xs:enumeration value="Executive Vice Chairperson" />
+    <xs:enumeration value="Trustee" />
+    <xs:enumeration value="Treasurer" />
+    <xs:enumeration value="Registered Contact" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="tu_gtuuid" id="tu_gtuuid">
+  <xs:annotation>
+    <xs:documentation>
+    GLOBAL TRADE UNION UNIVERSAL IDENTIFIER
+    The universal identifier for a given union.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:pattern value="" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="language" id="language">
+ <xs:restriction base="xs:token">
+ <xs:pattern
+ value="([a-zA-Z]{2}|[iI]-[a-zA-Z]+|[xX]-[a-zA-Z]{1,8})(-[a-zA-Z]{1,8})*"
+ />
+ </xs:restriction>
+</xs:simpleType>
+
+
+<!-- TRADE UNION COMPLEX TYPES -->
+
+<xs:complexType name="tu_ct_name" id="tu_ct_name">
+  <xs:annotation>
+    <xs:documentation>
+      TRADE UNION NAME
+      A given name for a trade union entity.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:simpleContent>
+    <xs:extension base="xs:string">
+      <xs:attribute name="type" type="tu_st_name_type" />
+      <xs:attribute name="lang" type="xml:lang" />
+    </xs:extension>
+  </xs:simpleContent>
+</xs:complexType>
+
+
+<xs:complexType name="tu_ct_contact" id="tu_ct_contact">
+  <xs:simpleContent>
+    <xs:extension base="xs:string">
+      <xs:attribute name="type" type="gen_st_contact_type" />
+    </xs:extension>
+   </xs:simpleContent>
+</xs:complexType>
+
+<xs:complexType name="tu_ct_person" id="tu_ct_person">
+  <xs:sequence>
+    <xs:element name="personaldetail" type="PersonNameType"  minOccurs="1" maxOccurs="1"/>
+    <xs:element name="contactdetail" minOccurs="1" maxOccurs="1">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element name="contact" type="tu_ct_contact" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+  <xs:attribute name="role" type="tu_st_person_role_type" />
+  <xs:attribute name="from" type="xs:date" />
+  <xs:attribute name="to" type="xs:date" />
+</xs:complexType>
+
+<xs:complexType name="tu_ct_workplace" id="tu_ct_workplace">
+  <xs:annotation>
+    <xs:documentation>
+      WORKPLACE
+
+      A type for a workplace.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:sequence>
+    <xs:element name="name" minOccurs="1" maxOccurs="1">
+    	<xs:complexType>
+    		<xs:simpleContent>
+    			<xs:extension base="xs:string" />
+    		</xs:simpleContent> 		
+    	</xs:complexType>
+    </xs:element>
+    <xs:element name="industrycode" minOccurs="1" maxOccurs="1">
+  		<xs:complexType>
+  			<xs:simpleContent>
+  				<xs:extension base="xs:string" />
+  			</xs:simpleContent> 		
+  		</xs:complexType>
+  	</xs:element>  	
+    <xs:element name="industryname" minOccurs="1" maxOccurs="1">
+  		<xs:complexType>
+  			<xs:simpleContent>
+  				<xs:extension base="xs:string" />
+  			</xs:simpleContent> 		
+  		</xs:complexType>
+  	</xs:element>  
+  	<xs:element	name="identifications" minOccurs="1" maxOccurs="1">
+  		<xs:complexType>
+  			<xs:sequence>
+  				<xs:element name="identification" minOccurs="1" maxOccurs="unbounded">
+  				  <xs:complexType>
+  				    <xs:simpleContent>
+  				      <xs:extension base="xs:string">
+  				        <xs:attribute name="type" type="tu_st_identification_type"></xs:attribute>
+  				      </xs:extension>
+  				    </xs:simpleContent>
+  				  </xs:complexType>
+  				</xs:element>
+  			</xs:sequence>
+  		</xs:complexType>
+  	</xs:element>
+    <xs:element name="address" type="PostalAddressType" minOccurs="0" maxOccurs="1"/>
+  </xs:sequence>
+  <xs:attribute name="from" type="xs:date" />
+  <xs:attribute name="to" type="xs:date" />
+  <xs:attribute name="status" type="tu_st_workplace_status" />
+</xs:complexType>
+
+
+<!-- STRUCTURE FOR TRADEUNION ELEMENT -->
+
+  <xs:element name="tradeunion">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="basicinformation" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="name" type="xs:string"/>
+              <xs:element name="othernames">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="othername" type="tu_ct_name" minOccurs="1"
+                      maxOccurs="unbounded"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="address" type="PostalAddressType"/>
+              <xs:element name="website" type="xs:anyURI"/>
+              <xs:element name="contacts">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="contact" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="type" type="gen_st_contact_type"/>
+                            <xs:attribute name="context" type="gen_st_contact_context"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="meta" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="logoimages">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="logoimage">
+                      <xs:complexType>
+                        <xs:attribute name="type" type="xs:string"/>
+                        <xs:attribute name="src" type="xs:anyURI"/>
+                        <xs:attribute name="size" type="xs:string"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="history">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="createdon" type="xs:date"/>
+                    <xs:element name="updatedon" type="xs:date"/>
+                    <xs:element name="statuses">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="status" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="from" type="xs:string"/>
+                              <xs:attribute name="to" type="xs:string"/>
+                              <xs:attribute name="statuscode" type="tu_st_history_status"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="identifications" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Identification" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="Type" type="tu_st_identification_type"/>
+                      <xs:attribute name="Value" type="xs:string"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="people" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="person" type="tu_ct_person" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="relationships" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="relationship">
+                <xs:complexType>
+                  <xs:attribute name="Type" type="xs:string"/>
+                  <xs:attribute name="ref" type="xs:string"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>   
+        <xs:element name="structures" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+            <xs:element name="structure" minOccurs="1" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute name="type" type="tu_st_structure_type"/>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="events" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="event" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="type" type="tu_st_event_type"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="workplaces" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="workplace" type="tu_ct_workplace" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+      </xs:sequence>
+      <xs:attribute name="GTUUID" type="xs:string"/>
+      <xs:attribute name="Type" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
