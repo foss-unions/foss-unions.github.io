@@ -574,7 +574,7 @@
         <xs:element name="identifications" minOccurs="1" maxOccurs="1">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="Identification" maxOccurs="unbounded">
+              <xs:element name="identification" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:simpleContent>
                     <xs:extension base="xs:string">
