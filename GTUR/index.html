@@ -8,28 +8,29 @@
 <script src="bower_components/store-js/store.js" charset="utf-8"></script>
 <script src="js/gtur.js" charset="utf-8"></script>
 <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet" href="bower_components/materialize/dist/css/materialize.css">
 <link rel="stylesheet" href="css/gtur.css">
 <link href="https://fonts.googleapis.com/css?family=David+Libre|Merriweather" rel="stylesheet">
 <meta class="foundation-mq"></head>
 <body>
-
-<div class="gtur_fw_header">
-  <div class="container">
-    <div class="col-md-4">
-      <h1 class="gtur_title"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>&nbsp;Global Trade Union Repository</h1><br />
+<nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <div id="logo-container">
+        <h1 class="gtur_title"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>&nbsp;Global Trade Union Repository</h1><
+      </div>
     </div>
-    <div class="col-md-8 gtur_search_header">
-      <form name="search" method="get">
-      <div class="input-group">
-          <input id="gtur_search" type="text" class="form-control" placeholder="Search for...">
-      </div><!-- /input-group -->
-      </form>
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="input-field col s12">
+      <input placeholder="Search the GTUR" id="gtur_search" type="text" class="validate">
     </div>
   </div>
 </div>
-<div class="results_container">
+<div class="container">
+  <div class="row" id ="result_contents">
 
+  </div>
 </div>
-
 </body>
 </html>

@@ -13,9 +13,10 @@ div.gtur_fw_header_sub {
   padding-top: 10px;
 }
 h1.gtur_title {
+  color: #000000;
   margin-top: 0px;
   padding-top: 5px;
   padding-right:10px;
   font-family: 'Merriweather', serif;
-  font-size: 1.4em;
+  font-size: 1.9em;
 }
