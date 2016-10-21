@@ -5,13 +5,11 @@ $(document).ready(function(){
   var result = {};
 
 
-  if(store.get("GTUR_REPO_DATA") == null) {
-    $.get(repo_url,function(data){
-      if(typeof data === "object") {
-        store.set("GTUR_REPO_DATA",data);
-      }
-    });
-  }
+  $.get(repo_url,function(data){
+    if(typeof data === "object") {
+      store.set("GTUR_REPO_DATA",data);
+    }
+  });
 
   $("#gtur_search").keyup(function(){
     console.log($("#gtur_search").val().length);
@@ -27,8 +25,8 @@ $(document).ready(function(){
         ]
       };
       var term = $("#gtur_search").val();
-      var data = store.get("GTUR_REPO_DATA");
-      data = data.union_entities !== null ? data.union_entities : [];
+      var data = store.get("GTUR_REPO_DATA") || { union_entities : [] };
+      data = data.union_entities;
       var fuse = new Fuse(data,options);
       result = fuse.search(term);
       console.log(result);
