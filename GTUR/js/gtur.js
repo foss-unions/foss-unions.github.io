@@ -27,8 +27,8 @@ $(document).ready(function(){
         ]
       };
       var term = $("#gtur_search").val();
-      var data = store.get("GTUR_REPO_DATA") || {};
-      data = data.union_entities;
+      var data = store.get("GTUR_REPO_DATA");
+      data = data.union_entities !== null ? data.union_entities : [];
       var fuse = new Fuse(data,options);
       result = fuse.search(term);
       console.log(result);
