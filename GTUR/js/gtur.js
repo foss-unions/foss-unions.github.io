@@ -1,14 +1,17 @@
 $(document).ready(function(){
 
   var data = {};
-  var repo_url = "DATA/REPO.json";
+  var repo_url = "https://foss-unions.github.io/GTUR/DATA/REPO.json";
   var result = {};
 
-  var req = $.get(repo_url);
-  
-  if(req.readystate ==4) {
-    store.set("GTUR_REPO_DATA",JSON.parse(req.responseText));
-  }
+  // Write to local storage
+  var ls = $.get(repo_url,function(data){
+    store.set("GTUR_REPO_DATA",data);
+  })
+    .fail(function(){
+      alert("error");
+    });
+
 
 
   $("#gtur_search").keyup(function(){
