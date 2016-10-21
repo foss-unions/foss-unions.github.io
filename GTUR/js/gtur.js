@@ -4,8 +4,8 @@ $(document).ready(function(){
   var repo_url = "DATA/REPO.json";
   var result = {};
 
-
   $.get(repo_url,function(data){
+    console.log(typeof data);
     if(typeof data === "object") {
       store.set("GTUR_REPO_DATA",data);
     }
