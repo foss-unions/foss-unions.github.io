@@ -5,7 +5,7 @@ $(document).ready(function(){
   var result = {};
 
 
-  if(store.get("GTUR_REPO_DATA") !== null) {
+  if(store.get("GTUR_REPO_DATA") == null) {
     $.get(repo_url,function(data){
       if(typeof data === "object") {
         store.set("GTUR_REPO_DATA",data);
@@ -23,11 +23,12 @@ $(document).ready(function(){
         distance: 100,
         maxPatternLength: 32,
         keys: [
-          "name"
+          "name","othernames"
         ]
       };
       var term = $("#gtur_search").val();
-      var data = store.get("GTUR_REPO_DATA").union_entities;
+      var data = store.get("GTUR_REPO_DATA") || {};
+      data = data.union_entities;
       var fuse = new Fuse(data,options);
       result = fuse.search(term);
       console.log(result);
