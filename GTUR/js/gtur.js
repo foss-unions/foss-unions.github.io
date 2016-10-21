@@ -4,12 +4,12 @@ $(document).ready(function(){
   var repo_url = "DATA/REPO.json";
   var result = {};
 
-  $.get(repo_url,function(data){
-    console.log(typeof data);
-    if(typeof data === "object") {
-      store.set("GTUR_REPO_DATA",data);
-    }
-  });
+  var req = $.get(repo_url);
+  
+  if(req.readystate ==4) {
+    store.set("GTUR_REPO_DATA",JSON.parse(req.responseText));
+  }
+
 
   $("#gtur_search").keyup(function(){
     console.log($("#gtur_search").val().length);
