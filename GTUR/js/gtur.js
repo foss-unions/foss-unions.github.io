@@ -8,7 +8,7 @@ $(document).ready(function(){
       type: "GET",
       url: repo_url,
       dataType: "json"
-  }).done(function (res) {
+  }).done(function (data) {
       store.set("GTUR_REPO_DATA",data);
   }).fail(function (jqXHR, textStatus, errorThrown) {
       alert("AJAX call failed: " + textStatus + ", " + errorThrown);
