@@ -1,18 +1,16 @@
 $(document).ready(function(){
-
   var data = {};
-  var repo_url = "https://foss-unions.github.io/GTUR/DATA/REPO.json";
+  var repo_url = (window.location.href.indexOf("foss-unions.github.io") == -1 ? "https://foss-unions.github.io/GTUR/" : "") + "DATA/REPO.json";
   var result = {};
 
-  // Write to local storage
-  var ls = $.get(repo_url,function(data){
-    store.set("GTUR_REPO_DATA",data);
-  })
-    .fail(function(){
-      alert("error");
+
+  if(store.get("GTUR_REPO_DATA") == null || store.get("GTUR_REPO_DATA") == undefined) {
+    $.get(repo_url,function(data){
+      if(typeof data === "object") {
+        store.set("GTUR_REPO_DATA",data);
+      }
     });
-
-
+  }
 
   $("#gtur_search").keyup(function(){
     console.log($("#gtur_search").val().length);
@@ -28,8 +26,7 @@ $(document).ready(function(){
         ]
       };
       var term = $("#gtur_search").val();
-      var data = store.get("GTUR_REPO_DATA") || { union_entities : [] };
-      data = data.union_entities;
+      var data = store.get("GTUR_REPO_DATA").union_entities;
       var fuse = new Fuse(data,options);
       result = fuse.search(term);
       console.log(result);
