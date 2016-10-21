@@ -1,16 +1,18 @@
 $(document).ready(function(){
   var data = {};
-  var repo_url = (window.location.href.indexOf("foss-unions.github.io") == -1 ? "https://foss-unions.github.io/GTUR/" : "") + "DATA/REPO.json";
+  var repo_url = (window.location.href.indexOf("https://foss-unions.github.io") == -1 ? "https://foss-unions.github.io/GTUR/" : "") + "DATA/REPO.json";
   var result = {};
 
 
-  if(store.get("GTUR_REPO_DATA") == null || store.get("GTUR_REPO_DATA") == undefined) {
-    $.get(repo_url,function(data){
-      if(typeof data === "object") {
-        store.set("GTUR_REPO_DATA",data);
-      }
-    });
-  }
+  $.ajax({
+      type: "GET",
+      url: repo_url,
+      dataType: "json"
+  }).done(function (res) {
+      store.set("GTUR_REPO_DATA",data);
+  }).fail(function (jqXHR, textStatus, errorThrown) {
+      alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+  });
 
   $("#gtur_search").keyup(function(){
     console.log($("#gtur_search").val().length);
