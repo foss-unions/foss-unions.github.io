@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
   var data = {};
-  var repo_url = "https://foss-unions.github.io/GTUR/DATA/REPO.json";
+  var repo_url = "DATA/REPO.json";
   var result = {};
 
 
